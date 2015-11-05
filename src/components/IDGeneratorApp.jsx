@@ -16,6 +16,8 @@ class IDGeneratorApp extends Component {
   return (
     <Grid>
       { content }
+      <hr />
+      <p className="text-center">App created by <a href="https://bitnation.co/">Bitnation</a></p>
     </Grid>
   );
 }
