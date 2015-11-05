@@ -6,12 +6,19 @@
   },
   "license": "MIT",
   "dependencies": {
+    "bootstrap": "^3.3.5",
     "react": "^0.14.2",
     "react-dom": "^0.14.2"
   },
   "devDependencies": {
+    "babel-core": "^6.0.20",
     "babel-loader": "^5.0.1",
+    "css-loader": "^0.22.0",
+    "file-loader": "^0.8.4",
     "html-webpack-plugin": "^1.6.2",
+    "react-bootstrap": "^0.27.3",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.6",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.12.1"
   }
