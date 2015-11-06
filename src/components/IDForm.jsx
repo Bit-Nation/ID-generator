@@ -5,6 +5,20 @@ import AvatarEditor from "react-avatar-editor";
 
 class IDForm extends Component {
 
+  handleSubmit(e) {
+    e.preventDefault();
+
+    var IDdata = {
+      name: this.refs.name.getValue(),
+      height: this.refs.height.getValue(),
+      dob: this.refs.dob.getValue(),
+      image: this.refs.avatar.getImage()
+    }
+
+    this.props.saveData(IDdata);
+
+  }
+
   render() {
 
     return (
@@ -12,7 +26,7 @@ class IDForm extends Component {
         <h2>ID Generation</h2>
         <hr />
         <Col md={6} mdOffset={3}>
-          <form>
+          <form onSubmit={this.handleSubmit.bind(this)}>
             <AvatarEditor
               ref="avatar"
               image="https://unsplash.it/500/500?image=823"

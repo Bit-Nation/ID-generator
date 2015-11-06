@@ -3,15 +3,20 @@ import { Grid } from 'react-bootstrap';
 import IDForm from './IDForm.jsx';
 import IDHTML from './IDHTML.jsx';
 
-// our ID form data
-let IDdata = {
-}
-
 class IDGeneratorApp extends Component {
 
-  render() {
+  constructor() {
+    super();
+    this.state = {};
+  }
 
-    let content = (IDdata.name) ? <IDHTML /> : <IDForm />;
+  saveData(data) {
+    this.setState({IDdata:data});
+  }
+
+  render() {
+    
+    let content = (this.state.IDdata) ? <IDHTML data={this.state.IDdata}/> : <IDForm saveData={this.saveData.bind(this)}/>;
 
   return (
     <Grid>

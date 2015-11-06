@@ -7,7 +7,10 @@ class IDHTML extends Component {
 
     return (
       <Grid>
-        <h2>I am a a display of rendered results</h2>
+        <h1>Details for {this.props.data.name}</h1>
+        <img src={this.props.data.image} />
+        <p>Born: {this.props.data.dob}</p>
+        <p>Height: {this.props.data.height}cm</p>
       </Grid>
     );
   }
