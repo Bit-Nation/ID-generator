@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Col, Input, ButtonInput } from 'react-bootstrap';
 
-import AvatarCropper from "react-avatar-cropper";
+import AvatarEditor from "react-avatar-editor";
 
 class IDForm extends Component {
 
@@ -11,28 +11,43 @@ class IDForm extends Component {
       <Grid>
         <h2>ID Generation</h2>
         <hr />
-        <Col lg={6} lgOffset={3}>
-          <Input
-            type="text"
-            ref="name"
-            placeholder="Norma Jeane Mortenson"
-            label="Your name"
-            help="Format of name: first middle last"
-            />
+        <Col md={6} mdOffset={3}>
+          <form>
+            <AvatarEditor
+              ref="avatar"
+              image="https://unsplash.it/500/500?image=823"
+              width={300}
+              height={300}
+              border={50}
+              color={[255, 255, 255, 0.6]}
+              scale={1.2}
+              />
+            <Input
+              type="text"
+              ref="name"
+              placeholder="Norma Jeane Mortenson"
+              label="Your name"
+              help="Format: First Middle Last"
+              required
+              />
             <Input
               type="number"
               ref="height"
               label="Your height"
               help="In centimeters"
+              required
+              placeholder="177"
               />
-              <Input
-                type="text"
-                ref="dob"
-                label="Your date of birth"
-                help="Format: YYYYMMDD"
-                placeholder="19910823"
-                />
+            <Input
+              type="number"
+              ref="dob"
+              label="Your date of birth"
+              help="Format: YYYYMMDD"
+              placeholder="19910823"
+              required
+              />
             <ButtonInput className="center-block" type="submit" value="Generate ID" bsStyle="primary" bsSize="large"/>
+          </form>
         </Col>
       </Grid>
     );
