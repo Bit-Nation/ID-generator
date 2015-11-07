@@ -42,6 +42,7 @@ class IDForm extends Component {
   }
 
   handleCrop(dataURI) {
+    console.log(dataURI);
     this.setState({
       cropperOpen: false,
       croppedImage: dataURI
@@ -69,6 +70,7 @@ class IDForm extends Component {
               type="file"
               accept="image/*"
               onChange={this.handleFile.bind(this)}
+              required
               />
             <img src={this.state.croppedImage} />
             { this.state.cropperOpen && <AvatarEditor
