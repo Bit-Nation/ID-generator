@@ -42,7 +42,6 @@ class IDForm extends Component {
   }
 
   handleCrop(dataURI) {
-    console.log(dataURI);
     this.setState({
       cropperOpen: false,
       croppedImage: dataURI
