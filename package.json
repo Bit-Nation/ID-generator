@@ -1,14 +1,14 @@
 {
   "name": "ID-generator",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack -p",
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
   },
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^3.3.5",
     "react": "^0.14.2",
-    "react-avatar-editor": "^2.0.0",
+    "react-avatar-cropper": "^0.1.1",
     "react-dom": "^0.14.2"
   },
   "devDependencies": {
