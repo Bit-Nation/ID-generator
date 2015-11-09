@@ -1,14 +1,21 @@
+$black: #000;
+
 .IDHTML {
-  h1 {
+  h1, h2 {
     text-transform: uppercase;
+  }
+
+  .row {
+    border-bottom: 1px dashed $black;
   }
 
   .row > * {
     padding: 3rem;
   }
 
-  .row > div:first-child {
-    border-right: 1px dashed black;
-
+  @media only screen and (min-width: 768px) {
+    .row > div:first-child {
+      border-right: 1px dashed $black;
+    }
   }
 }

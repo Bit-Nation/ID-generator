@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col, Image, Table, Glyphicon } from 'react-bootstrap';
 require('../libs/pngSupport.min.js');
 
 class IDHTML extends Component {
@@ -17,22 +17,38 @@ class IDHTML extends Component {
     return (
       <Grid className="IDHTML">
         <Row>
-          <Col md={6}>
+          <Col sm={6}>
             <h1>Bitnation<br/><small>Emergency Refugee ID</small></h1>
           </Col>
-          <Col md={6}>
+          <Col sm={6}>
             <ul className="list-unstyled">
-              <li><a href="#"><Glyphicon glyph="print" /> Print</a></li>
-              <li><a href="#"><Glyphicon glyph="save" /> Download</a></li>
-              <li><a href="#"><Glyphicon glyph="envelope" /> Contact</a></li>
+              <li><a href="#" onClick={this.generatePDF.bind(this)}><Glyphicon glyph="save" /> Save as PDF</a></li>
+              <li><a href="https://bitnation.co/" ><Glyphicon glyph="envelope" /> Contact Us</a></li>
             </ul>
           </Col>
         </Row>
-        <h1>Details for {this.props.data.name}</h1>
-        <img src={this.props.data.image} />
-        <p>Born: {this.props.data.dob}</p>
-        <p>Height: {this.props.data.height}cm</p>
-        <Button bsStyle="success" onClick={this.generatePDF.bind(this)}>Generate PDF</Button>
+        <Row>
+          <Col sm={6}>
+            <h2>Photo</h2>
+            <Image src={this.props.data.image} responsive thumbnail />
+          </Col>
+          <Col sm={6}>
+            <h2>Identity data</h2>
+            <Table striped bordered condensed>
+              <tbody>
+                <tr>
+                  <td>Name</td><td>{this.props.data.name}</td>
+                </tr>
+                <tr>
+                  <td>Date of Birth</td><td>{this.props.data.dob}</td>
+                </tr>
+                <tr>
+                  <td>Height</td><td>{this.props.data.height}cm</td>
+                </tr>
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
       </Grid>
     );
   }
