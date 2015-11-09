@@ -7,7 +7,7 @@ class IDHTML extends Component {
   generatePDF() {
     var IDasPDF = new jsPDF('p','pt','a4');
 
-    IDasPDF.addHTML(document.body, () => {
+    IDasPDF.addHTML(document.body, { pagesplit: true }, () => {
       IDasPDF.save(this.props.data.name + ' - ID.pdf');
     });
   }
