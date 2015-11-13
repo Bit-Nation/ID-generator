@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, Input, Image, ButtonInput } from 'react-bootstrap';
+import { Form, ValidatedInput } from 'react-bootstrap-validation';
 
-import AvatarEditor from "react-avatar-cropper";
+import AvatarEditor from 'react-avatar-cropper';
 
 class IDForm extends Component {
 
@@ -12,18 +13,23 @@ class IDForm extends Component {
     };
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleValidSubmit(values) {
 
     var IDdata = {
-      name: this.refs.name.getValue(),
-      height: this.refs.height.getValue(),
-      dob: this.refs.dob.getValue(),
+      name: values.name,
+      height: values.height,
+      dob: values.height,
+      password: values.password,
       image: this.state.croppedImage
     }
 
     this.props.saveData(IDdata);
 
+  }
+
+  handleInvalidSubmit(errors, values) {
+
+    console.log(errors)
   }
 
   handleFile(e) {
@@ -63,15 +69,16 @@ class IDForm extends Component {
         <h2>ID Generation<br/><small>Please enter your details</small></h2>
         <hr />
         <Col md={10} mdOffset={1}>
-          <form onSubmit={this.handleSubmit.bind(this)}>
+          <Form
+            onValidSubmit={this.handleValidSubmit.bind(this)}
+            onInvalidSubmit={this.handleInvalidSubmit.bind(this)}>
             <Row>
               <Col sm={6}>
                 { this.state.croppedImage && <Image src={this.state.croppedImage} responsive thumbnail /> }
                 <Input
-                  type="file"
-                  label="Upload your photo"
-                  type="file"
-                  accept="image/*"
+                  type='file'
+                  label='Upload your photo'
+                  accept='image/*'
                   onChange={this.handleFile.bind(this)}
                   required
                   />
@@ -86,34 +93,57 @@ class IDForm extends Component {
               }
             </Col>
             <Col sm={6}>
-              <Input
-                type="text"
-                ref="name"
-                placeholder="Norma Jeane Mortenson"
-                label="Your name"
-                help="Format: First Middle Last"
-                required
+              <ValidatedInput
+                type='text'
+                placeholder='Norma Jeane Mortenson'
+                help='Format: First Middle Last'
+                label='Your name'
+                name='name'
+                validate='required'
+                errorHelp='Please enter your name'
                 />
-              <Input
-                type="number"
-                ref="height"
-                label="Your height"
-                help="In centimeters"
-                required
-                placeholder="177"
+
+              <ValidatedInput
+                type='number'
+                name='height'
+                label='Your height'
+                help='In centimeters'
+                placeholder='177'
+                validate='required,isInt'
+                errorHelp='Please enter your height'
                 />
-              <Input
-                type="number"
-                ref="dob"
-                label="Your date of birth"
-                help="Format: YYYYMMDD"
-                placeholder="19910823"
-                required
+
+              <ValidatedInput
+                type='number'
+                name='dob'
+                label='Your date of birth'
+                help='Format: YYYYMMDD'
+                placeholder='19910823'
+                validate='required,isInt,isLength:8:8'
+                errorHelp='Please enter a valid date of birth: YYYYMMDD'
                 />
-              <ButtonInput className="center-block" type="submit" value="Generate ID" bsStyle="primary" bsSize="large"/>
+
+              <ValidatedInput
+                type='password'
+                name='password'
+                label='Password'
+                help='Used to encrypt your private key.'
+                validate='required'
+                errorHelp='Please specify a password'
+                />
+
+              <ValidatedInput
+                type='password'
+                name='password-confirm'
+                label='Confirm Password'
+                validate={(val, context) => val === context.password}
+                errorHelp='Passwords do not match'
+                />
+
+              <ButtonInput className='center-block' type='submit' value='Generate ID' bsStyle='primary' bsSize='large'/>
             </Col>
           </Row>
-        </form>
+        </Form>
       </Col>
     </Grid>
   );

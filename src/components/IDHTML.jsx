@@ -12,7 +12,13 @@ class IDHTML extends Component {
     });
   }
 
+  componentWillMount() {
+    console.log(this.props.data);
+  }
+
   render() {
+
+
 
     return (
       <Grid className="IDHTML">
@@ -47,6 +53,14 @@ class IDHTML extends Component {
                 </tr>
               </tbody>
             </Table>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={6}>
+            <h2>QR codes</h2>
+          </Col>
+          <Col sm={6}>
+            {JSON.stringify(this.props.data)}
           </Col>
         </Row>
       </Grid>
