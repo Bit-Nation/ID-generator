@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, Image, Table, Glyphicon } from 'react-bootstrap';
+import QRCode from 'react-qr';
 require('../libs/pngSupport.min.js');
 
 class IDHTML extends Component {
@@ -18,7 +19,11 @@ class IDHTML extends Component {
 
   render() {
 
-
+    let certData = {
+      name: this.props.data.name,
+      dateOfBirth: this.props.data.dob,
+      height: this.props.data.height + 'cm'
+    };
 
     return (
       <Grid className="IDHTML">
@@ -58,9 +63,10 @@ class IDHTML extends Component {
         <Row>
           <Col sm={6}>
             <h2>QR codes</h2>
+            <QRCode text={JSON.stringify(certData)} />
           </Col>
           <Col sm={6}>
-            {JSON.stringify(this.props.data)}
+            {JSON.stringify(certData)}
           </Col>
         </Row>
       </Grid>
