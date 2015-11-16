@@ -6,6 +6,13 @@ require('../libs/pngSupport.min.js');
 
 class IDHTML extends Component {
 
+  constructor() {
+    super();
+    this.state = {
+      keyPair: tweetnacl.sign.keyPair()
+    };
+  }
+
   generatePDF() {
     var IDasPDF = new jsPDF();
 
@@ -14,42 +21,33 @@ class IDHTML extends Component {
     });
   }
 
-  componentWillMount() {
-    console.log(this.props.data);
-
-    // let base64ForImage = this.props.data.image.split(',');
-    // console.log(base64ForImage);
-
-    // <tr>
-    //   <td>Image hash</td><td>{tweetnacl.hash(tweetnacl.util.decodeBase64(this.props.data.image))}</td>
-    // </tr>
-    // componentWillMount() {
-    //   let keyPair = tweetnacl.sign.keyPair();
-    //   console.log('Public key...');
-    //   let publicKey = keyPair.publicKey;
-    //   console.log(publicKey);
-    //   console.log(tweetnacl.util.encodeBase64(publicKey));
-    //
-    //   console.log('signing a string...')
-    //   let message = tweetnacl.util.decodeUTF8("Hello Andrew");
-    //   let signedMessage = tweetnacl.sign(message, keyPair.secretKey);
-    //   console.log(signedMessage);
-    //   let base64SignedMessage = tweetnacl.util.encodeBase64(signedMessage);
-    //   console.log(base64SignedMessage);
-    //   console.log(tweetnacl.util.encodeUTF8(tweetnacl.sign.open(tweetnacl.util.decodeBase64(base64SignedMessage), keyPair.publicKey)));
-    //
-    //   console.log(tweetnacl.util.encodeBase64(tweetnacl.hash(message)));
-    // }
-  }
-
   render() {
 
-    let certData = {
+    let certData = JSON.stringify({
       name: this.props.data.name,
       dateOfBirth: this.props.data.dob,
       height: this.props.data.height + 'cm',
       imageHash: tweetnacl.util.encodeBase64(tweetnacl.hash(tweetnacl.util.decodeBase64(this.props.data.image.split(',')[1])))
-    };
+    });
+
+    // console.log('message');
+    // console.log(certData);
+
+    let publicKey = tweetnacl.util.encodeBase64(this.state.keyPair.publicKey);
+    // console.log('public key');
+    // console.log(publicKey);
+
+    let signedCertData = tweetnacl.util.encodeBase64(tweetnacl.sign(tweetnacl.util.decodeUTF8(certData), this.state.keyPair.secretKey));
+    // console.log('signed cert data');
+    // console.log(signedCertData);
+
+    // let detachedData = tweetnacl.util.encodeBase64(tweetnacl.sign.detached(tweetnacl.util.decodeUTF8(certData), this.state.keyPair.secretKey));
+    // console.log('detached key signature');
+    // console.log(detachedData);
+
+    let originalMessage = tweetnacl.sign.open(tweetnacl.util.decodeBase64(signedCertData), this.state.keyPair.publicKey);
+    // console.log(tweetnacl.util.encodeBase64(originalMessage));
+    // console.log(tweetnacl.util.encodeUTF8(originalMessage));
 
     return (
       <Grid className="IDHTML">
@@ -89,10 +87,26 @@ class IDHTML extends Component {
         <Row>
           <Col sm={6}>
             <h2>QR codes</h2>
-            <QRCode text={JSON.stringify(certData)} />
+            <h3><small>JSON encoded data entered by user</small></h3>
+            <QRCode text={certData} />
+            <h3><small>Public key (encoded as Base64)</small></h3>
+            <QRCode text={publicKey} />
+            <h3><small>Signed cert data (encoded as Base64)</small></h3>
+            <QRCode text={signedCertData} />
           </Col>
           <Col sm={6} className="certData">
-            {JSON.stringify(certData)}
+            <h3><small>JSON encoded data entered by user</small></h3>
+            {certData}
+            <h3><small>Public key (encoded as Base64)</small></h3>
+            {publicKey}
+            <h3><small>Signed cert data (encoded as Base64)</small></h3>
+            {signedCertData}
+            <hr />
+            <h2>DEBUG DATA</h2>
+            <h3><small>Private/secret key (encoded as Base64)</small></h3>
+            {tweetnacl.util.encodeBase64(this.state.keyPair.secretKey)}
+            <h3><small>Decrypted message (encoded as UTF8)</small></h3>
+            {tweetnacl.util.encodeUTF8(originalMessage)}
           </Col>
         </Row>
       </Grid>
