@@ -13,24 +13,6 @@ class IDForm extends Component {
     };
   }
 
-  // componentWillMount() {
-  //   let keyPair = tweetnacl.sign.keyPair();
-  //   console.log('Public key...');
-  //   let publicKey = keyPair.publicKey;
-  //   console.log(publicKey);
-  //   console.log(tweetnacl.util.encodeBase64(publicKey));
-  //
-  //   console.log('signing a string...')
-  //   let message = tweetnacl.util.decodeUTF8("Hello Andrew");
-  //   let signedMessage = tweetnacl.sign(message, keyPair.secretKey);
-  //   console.log(signedMessage);
-  //   let base64SignedMessage = tweetnacl.util.encodeBase64(signedMessage);
-  //   console.log(base64SignedMessage);
-  //   console.log(tweetnacl.util.encodeUTF8(tweetnacl.sign.open(tweetnacl.util.decodeBase64(base64SignedMessage), keyPair.publicKey)));
-  //
-  //   console.log(tweetnacl.util.encodeBase64(tweetnacl.hash(message)));
-  // }
-
   handleValidSubmit(values) {
 
     var IDdata = {
