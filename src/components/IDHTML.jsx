@@ -16,6 +16,13 @@ class IDHTML extends Component {
 
   componentWillMount() {
     console.log(this.props.data);
+
+    // let base64ForImage = this.props.data.image.split(',');
+    // console.log(base64ForImage);
+
+    // <tr>
+    //   <td>Image hash</td><td>{tweetnacl.hash(tweetnacl.util.decodeBase64(this.props.data.image))}</td>
+    // </tr>
     // componentWillMount() {
     //   let keyPair = tweetnacl.sign.keyPair();
     //   console.log('Public key...');
@@ -40,7 +47,8 @@ class IDHTML extends Component {
     let certData = {
       name: this.props.data.name,
       dateOfBirth: this.props.data.dob,
-      height: this.props.data.height + 'cm'
+      height: this.props.data.height + 'cm',
+      imageHash: tweetnacl.util.encodeBase64(tweetnacl.hash(tweetnacl.util.decodeBase64(this.props.data.image.split(',')[1])))
     };
 
     return (
@@ -83,7 +91,7 @@ class IDHTML extends Component {
             <h2>QR codes</h2>
             <QRCode text={JSON.stringify(certData)} />
           </Col>
-          <Col sm={6}>
+          <Col sm={6} className="certData">
             {JSON.stringify(certData)}
           </Col>
         </Row>
