@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Image, Table, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col, Image, Table, Glyphicon, Alert } from 'react-bootstrap';
 import QRCode from 'react-qr';
 import tweetnacl from 'tweetnacl';
 require('../libs/pngSupport.min.js');
@@ -32,24 +32,17 @@ class IDHTML extends Component {
       imageHash: tweetnacl.util.encodeBase64(tweetnacl.hash(tweetnacl.util.decodeBase64(this.props.data.image.split(',')[1])))
     });
 
-    // console.log('message');
-    // console.log(certData);
-
     let publicKey = tweetnacl.util.encodeBase64(this.state.keyPair.publicKey);
-    // console.log('public key');
-    // console.log(publicKey);
 
-    let signedCertData = tweetnacl.util.encodeBase64(tweetnacl.sign(tweetnacl.util.decodeUTF8(certData), this.state.keyPair.secretKey));
-    // console.log('signed cert data');
-    // console.log(signedCertData);
+    let signature = tweetnacl.util.encodeBase64(tweetnacl.sign.detached(tweetnacl.util.decodeUTF8(certData), this.state.keyPair.secretKey));
 
-    // let detachedData = tweetnacl.util.encodeBase64(tweetnacl.sign.detached(tweetnacl.util.decodeUTF8(certData), this.state.keyPair.secretKey));
-    // console.log('detached key signature');
-    // console.log(detachedData);
+    let verificationData = JSON.stringify({
+      publicKey: publicKey,
+      signature: signature,
+      nhzTx: '123456789123487651234'
+    });
 
-    let originalMessage = tweetnacl.sign.open(tweetnacl.util.decodeBase64(signedCertData), this.state.keyPair.publicKey);
-    // console.log(tweetnacl.util.encodeBase64(originalMessage));
-    // console.log(tweetnacl.util.encodeUTF8(originalMessage));
+    let verifiedMessage = tweetnacl.sign.detached.verify(tweetnacl.util.decodeUTF8(certData), tweetnacl.util.decodeBase64(signature), tweetnacl.util.decodeBase64(publicKey)) ? 'Verified' : 'Failed to verify';
 
     return (
       <Grid className="IDHTML">
@@ -102,24 +95,26 @@ class IDHTML extends Component {
             <h2>QR codes</h2>
             <h3><small>JSON encoded data entered by user</small></h3>
             <QRCode text={certData} />
-            <h3><small>Public key (encoded as Base64)</small></h3>
-            <QRCode text={publicKey} />
-            <h3><small>Signed cert data (encoded as Base64)</small></h3>
-            <QRCode text={signedCertData} />
+            <h3><small>Verification data (encoded as Base64)</small></h3>
+            <QRCode text={verificationData} />
+            <h3><small>The encrypted secret key (encoded as Base64)</small></h3>
+            <h4>todo</h4>
           </Col>
           <Col sm={6} className="certData">
             <h3><small>JSON encoded data entered by user</small></h3>
             {certData}
-            <h3><small>Public key (encoded as Base64)</small></h3>
-            {publicKey}
-            <h3><small>Signed cert data (encoded as Base64)</small></h3>
-            {signedCertData}
+            <h3><small>Verification data (encoded as Base64)</small></h3>
+            {verificationData}
+            <h3><small>The encrypted secret key (encoded as Base64)</small></h3>
+            <h4>todo</h4>
             <hr />
             <h2>DEBUG DATA</h2>
             <h3><small>Private/secret key (encoded as Base64)</small></h3>
             {tweetnacl.util.encodeBase64(this.state.keyPair.secretKey)}
-            <h3><small>Decrypted message (encoded as UTF8)</small></h3>
-            {tweetnacl.util.encodeUTF8(originalMessage)}
+            <h3><small>Does the data (certificate data, signature, public key) verify?</small></h3>
+            <Alert bsStyle="info">
+              {verifiedMessage}
+            </Alert>
           </Col>
         </Row>
       </Grid>

@@ -151,8 +151,6 @@ class IDForm extends Component {
               validate={(val, context) => val === context.password}
               errorHelp='Passwords do not match'
               />
-
-            <ButtonInput className='center-block' type='submit' value='Generate ID' bsStyle='primary' bsSize='large'/>
           </Col>
           <Col sm={4}>
             <p>To add credibility to this ID, please have a couple of family members witness you filling out this form.</p>
@@ -176,6 +174,7 @@ class IDForm extends Component {
               />
           </Col>
         </Row>
+        <ButtonInput className='center-block' type='submit' value='Generate ID' bsStyle='primary' bsSize='large'/>
       </Form>
     </Grid>
   );
