@@ -27,6 +27,8 @@ class IDHTML extends Component {
       name: this.props.data.name,
       dateOfBirth: this.props.data.dob,
       height: this.props.data.height + 'cm',
+      familyMember1: this.props.data.familyMember1,
+      familyMember2: this.props.data.familyMember2,
       imageHash: tweetnacl.util.encodeBase64(tweetnacl.hash(tweetnacl.util.decodeBase64(this.props.data.image.split(',')[1])))
     });
 
@@ -79,6 +81,17 @@ class IDHTML extends Component {
                 </tr>
                 <tr>
                   <td>Height</td><td>{this.props.data.height}cm</td>
+                </tr>
+              </tbody>
+            </Table>
+            <h3>Family member witnesses</h3>
+            <Table striped bordered condensed>
+              <tbody>
+                <tr>
+                  <td>1st Family member</td><td>{this.props.data.familyMember1}</td>
+                </tr>
+                <tr>
+                  <td>2nd Family member</td><td>{this.props.data.familyMember2}</td>
                 </tr>
               </tbody>
             </Table>
