@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Row, Col, Image, Table, Glyphicon, Alert } from 'react-bootstrap';
 import QRCode from 'react-qr';
 import tweetnacl from 'tweetnacl';
+import CryptoJS from 'crypto-js';
 require('../libs/pngSupport.min.js');
 
 class IDHTML extends Component {
@@ -42,7 +43,13 @@ class IDHTML extends Component {
       nhzTx: '123456789123487651234'
     });
 
+    let secretKey = tweetnacl.util.encodeBase64(this.state.keyPair.secretKey);
+
+    let encryptedSecretKey = CryptoJS.AES.encrypt(secretKey, this.props.data.password).toString();
+
+    // for debug data
     let verifiedMessage = tweetnacl.sign.detached.verify(tweetnacl.util.decodeUTF8(certData), tweetnacl.util.decodeBase64(signature), tweetnacl.util.decodeBase64(publicKey)) ? 'Verified' : 'Failed to verify';
+    let encryptedKeyCheck = CryptoJS.AES.decrypt(encryptedSecretKey, this.props.data.password).toString(CryptoJS.enc.Utf8) === secretKey ? 'Yes' : 'No';
 
     return (
       <Grid className="IDHTML">
@@ -98,7 +105,7 @@ class IDHTML extends Component {
             <h3><small>Verification data (encoded as Base64)</small></h3>
             <QRCode text={verificationData} />
             <h3><small>The encrypted secret key (encoded as Base64)</small></h3>
-            <h4>todo</h4>
+            <QRCode text={encryptedSecretKey} />
           </Col>
           <Col sm={6} className="certData">
             <h3><small>JSON encoded data entered by user</small></h3>
@@ -106,14 +113,20 @@ class IDHTML extends Component {
             <h3><small>Verification data (encoded as Base64)</small></h3>
             {verificationData}
             <h3><small>The encrypted secret key (encoded as Base64)</small></h3>
-            <h4>todo</h4>
+            {encryptedSecretKey}
             <hr />
             <h2>DEBUG DATA</h2>
             <h3><small>Private/secret key (encoded as Base64)</small></h3>
             {tweetnacl.util.encodeBase64(this.state.keyPair.secretKey)}
+            <h3><small>Password entered by user</small></h3>
+            {this.props.data.password}
             <h3><small>Does the data (certificate data, signature, public key) verify?</small></h3>
             <Alert bsStyle="info">
               {verifiedMessage}
+            </Alert>
+            <h3><small>Does the decrypted encrypted secret key equal the secret key encrypted with the above password?</small></h3>
+            <Alert bsStyle="info">
+              {encryptedKeyCheck}
             </Alert>
           </Col>
         </Row>
