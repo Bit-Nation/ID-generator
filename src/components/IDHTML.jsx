@@ -47,20 +47,22 @@ class IDHTML extends Component {
 
     let encryptedSecretKey = CryptoJS.AES.encrypt(secretKey, this.props.data.password).toString();
 
-    // for debug data
-    let verifiedMessage = tweetnacl.sign.detached.verify(tweetnacl.util.decodeUTF8(certData), tweetnacl.util.decodeBase64(signature), tweetnacl.util.decodeBase64(publicKey)) ? 'Verified' : 'Failed to verify';
-    let encryptedKeyCheck = CryptoJS.AES.decrypt(encryptedSecretKey, this.props.data.password).toString(CryptoJS.enc.Utf8) === secretKey ? 'Yes' : 'No';
+    // verifying signature and encrypted key
+    let signatureVerified = tweetnacl.sign.detached.verify(tweetnacl.util.decodeUTF8(certData), tweetnacl.util.decodeBase64(signature), tweetnacl.util.decodeBase64(publicKey));
+    let encryptedKeyCheck = (CryptoJS.AES.decrypt(encryptedSecretKey, this.props.data.password).toString(CryptoJS.enc.Utf8) === secretKey);
+
+    let verificationMessage = (signatureVerified && encryptedKeyCheck) ? 'Verified on generation' : 'Error in verification';
 
     return (
       <Grid className="IDHTML">
         <Row>
           <Col sm={6}>
-            <h1>Bitnation<br/><small>Emergency Refugee ID</small></h1>
+            <h1>Bitnation<br/><small>Emergency ID</small></h1>
           </Col>
           <Col sm={6}>
             <ul className="list-unstyled">
               <li><a href="#" onClick={this.generatePDF.bind(this)}><Glyphicon glyph="save" /> Save as PDF</a> (only works on large screens like laptops)</li>
-              <li><a href="https://bitnation.co/" ><Glyphicon glyph="envelope" /> Contact Us</a></li>
+              <li><a href="https://bitnation.co/" ><Glyphicon glyph="globe" /> https://bitnation.co/</a></li>
             </ul>
           </Col>
         </Row>
@@ -115,18 +117,9 @@ class IDHTML extends Component {
             <h3><small>The encrypted secret key (encoded as Base64)</small></h3>
             {encryptedSecretKey}
             <hr />
-            <h2>DEBUG DATA</h2>
-            <h3><small>Private/secret key (encoded as Base64)</small></h3>
-            {tweetnacl.util.encodeBase64(this.state.keyPair.secretKey)}
-            <h3><small>Password entered by user</small></h3>
-            {this.props.data.password}
-            <h3><small>Does the data (certificate data, signature, public key) verify?</small></h3>
-            <Alert bsStyle="info">
-              {verifiedMessage}
-            </Alert>
-            <h3><small>Does the decrypted encrypted secret key equal the secret key encrypted with the above password?</small></h3>
-            <Alert bsStyle="info">
-              {encryptedKeyCheck}
+            <h3><small>Checking signature and encrypted secret key</small></h3>
+            <Alert bsStyle="info" className="text-center">
+              {verificationMessage}
             </Alert>
           </Col>
         </Row>
