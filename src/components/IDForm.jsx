@@ -121,8 +121,8 @@ class IDForm extends Component {
               label='Your height'
               help='In centimeters'
               placeholder='177'
-              validate='required,isInt'
-              errorHelp='Please enter your height'
+              validate='required,isInt,isLength:2:3'
+              errorHelp='Please enter a valid height in centimeters'
               />
 
             <ValidatedInput
@@ -140,8 +140,8 @@ class IDForm extends Component {
               name='password'
               label='Password'
               help='Used to encrypt your private key.'
-              validate='required'
-              errorHelp='Please specify a password'
+              validate='required,isLength:6'
+              errorHelp='Please specify a password with minimum 6 characters'
               />
 
             <ValidatedInput
