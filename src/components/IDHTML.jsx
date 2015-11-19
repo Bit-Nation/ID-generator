@@ -57,7 +57,7 @@ class IDHTML extends Component {
       <Grid className="IDHTML">
         <Row>
           <Col sm={6}>
-            <h1>Bitnation<br/><small>Emergency ID</small></h1>
+            <h1>Bitnation<br/><small>Blockchain ID</small></h1>
           </Col>
           <Col sm={6}>
             <ul className="list-unstyled">
