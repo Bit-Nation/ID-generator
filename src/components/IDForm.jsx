@@ -26,8 +26,8 @@ class IDForm extends Component {
       dob: values.dob,
       password: values.password,
       image: this.state.croppedImage,
-      familyMember1: values.familyMember1,
-      familyMember2: values.familyMember2
+      witness1: values.witness1,
+      witness2: values.witness2
     }
 
     this.props.saveData(IDdata);
@@ -153,24 +153,24 @@ class IDForm extends Component {
               />
           </Col>
           <Col sm={4}>
-            <p>To add credibility to this ID, please have a couple of family members witness you filling out this form.</p>
+            <p>To add credibility to this ID, please have a couple of people witness you filling out this form.</p>
             <ValidatedInput
               type='text'
               placeholder='Elvis Aaron Presley'
               help='Format: First Middle Last'
-              label='1st Family member'
-              name='familyMember1'
+              label='1st witness'
+              name='witness1'
               validate='required'
-              errorHelp='Have a family member enter their name'
+              errorHelp='Have a witness enter their name'
               />
             <ValidatedInput
               type='text'
               placeholder='Leonardo Wilhelm DiCaprio'
               help='Format: First Middle Last'
-              label='2nd Family member'
-              name='familyMember2'
+              label='2nd witness'
+              name='witness2'
               validate='required'
-              errorHelp='Have another family member enter their name'
+              errorHelp='Have another witness enter their name'
               />
           </Col>
         </Row>
