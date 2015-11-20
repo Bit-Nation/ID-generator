@@ -39,16 +39,8 @@ class IDHTML extends Component {
     let encryptedKeyCheck = (CryptoJS.AES.decrypt(encryptedSecretKey, this.props.data.password).toString(CryptoJS.enc.Utf8) === secretKey);
     let verificationMessage = (signatureVerified && encryptedKeyCheck) ? 'Verified on generation' : 'Error in verification';
 
-    console.log('signature...');
-    console.log(signature);
-    console.log('publicKey...');
-    console.log(publicKey);
-    console.log('concat the two...');
-    console.log(signature + ':' + publicKey);
-    console.log(`${signature}:${publicKey}`);
-
     // send data to HZ
-    $.post( "https://refugees.bitnation.co/ref/server-req.php", { message: `${signature}:${publicKey}` }, function( data ) {
+    $.post( "https://refugees.bitnation.co/ref/server-req.php", { message: encodeURIComponent(`${signature}:${publicKey}`) }, function( data ) {
 
       console.log('Receiving data from HZ..');
       console.log(data);
