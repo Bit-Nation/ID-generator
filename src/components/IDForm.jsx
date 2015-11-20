@@ -3,6 +3,7 @@ import { Grid, Row, Col, Input, Image, ButtonInput } from 'react-bootstrap';
 import { Form, ValidatedInput } from 'react-bootstrap-validation';
 import AvatarEditor from 'react-avatar-cropper';
 
+
 class IDForm extends Component {
 
   /* Initialise */
