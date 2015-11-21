@@ -40,10 +40,7 @@ class IDHTML extends Component {
     let verificationMessage = (signatureVerified && encryptedKeyCheck) ? 'Verified on generation' : 'Error in verification';
 
     // send data to HZ
-    $.post( "https://refugees.bitnation.co/ref/server-req.php", { message: encodeURIComponent(`${signature}:${publicKey}`) }, function( data ) {
-
-      console.log('Receiving data from HZ..');
-      console.log(data);
+    $.post( "api/server-req.php", { message: encodeURIComponent(`${signature}:${publicKey}`) }, function( data ) {
 
       let verificationData = JSON.stringify({
         publicKey: publicKey,
