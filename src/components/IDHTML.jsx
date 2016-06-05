@@ -19,6 +19,8 @@ class IDHTML extends Component {
     const bitnationJsonId = {};
     console.log('User submitted information', this.props.data);
     const certData = bitnationId.getCertData(this.props.data);
+    bitnationJsonId.userData = certData;
+    bitnationJsonId.image = 'todo';
     console.log('created certData');
     const keyPair = bitnationId.generateKeypair();
     console.log('created keypair');
@@ -30,7 +32,14 @@ class IDHTML extends Component {
     bitnationId.encryptSecretKey(keyPair.secretKey, this.props.data.password)
     .then((encryptedSecretKeyBundle) => {
       console.log('created encryptedSecretKeyBundle');
-      bitnationJsonId.crypto = encryptedSecretKeyBundle;
+      bitnationJsonId.crypto = {
+        encryptedSecretKey: bitnationId.toBase64(encryptedSecretKeyBundle.encryptedSecretKey),
+        salt: bitnationId.toBase64(encryptedSecretKeyBundle.salt),
+        nonce: bitnationId.toBase64(encryptedSecretKeyBundle.nonce),
+        logN: encryptedSecretKeyBundle.logN,
+        blockSize: encryptedSecretKeyBundle.blockSize,
+        publicKey: bitnationId.toBase64(keyPair.publicKey)
+      };
       return bitnationId.checkEncryptedSecretKey(encryptedSecretKeyBundle, keyPair.secretKey, this.props.data.password);
     })
     .then((encryptedSecretKeyCheck) => {
@@ -41,6 +50,8 @@ class IDHTML extends Component {
       }
 
       console.log(verificationMessage);
+
+      bitnationJsonId.hztx = 12341234;
 
       const verificationData = JSON.stringify({
         publicKey: bitnationId.toBase64(keyPair.publicKey),
@@ -54,6 +65,7 @@ class IDHTML extends Component {
         certData,
         verificationData,
         verificationMessage,
+        bitnationJsonId,
         bitnationIdGenerated: true
       });
     })
@@ -85,9 +97,9 @@ class IDHTML extends Component {
 
   generateJSON() {
     console.log('generating a JSON...');
-    console.log(this.state.certData);
-    console.log(JSON.stringify(this.state.certData, null, 2));
-    const blob = new Blob([JSON.stringify(this.state.certData)], { type: 'application/json' });
+    console.log(this.state.bitnationJsonId);
+    console.log(JSON.stringify(this.state.bitnationJsonId, null, 2));
+    const blob = new Blob([JSON.stringify(this.state.bitnationJsonId)], { type: 'application/json' });
     saveAs(blob, 'bitnation-id.json');
   }
 
