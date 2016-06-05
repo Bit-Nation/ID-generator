@@ -6,13 +6,13 @@ class BitnationId {
 
   // return a JSON string of the data we wish to sign later.
   getCertData(userData) {
-    return JSON.stringify({
+    return {
       name: userData.name,
       dateOfBirth: userData.dob,
       height: userData.height,
       witness1: userData.witness1,
       witness2: userData.witness2
-    });
+    };
   }
 
   generateKeypair() {
@@ -20,8 +20,8 @@ class BitnationId {
   }
 
   // Take the userData and sign it with the keypair supplied, and return a signture.
-  signUserData(strToSign, secretKey) {
-    return tweetnacl.sign.detached(tweetnaclUtil.decodeUTF8(strToSign), secretKey);
+  signUserData(userData, secretKey) {
+    return tweetnacl.sign.detached(this.objToUint8Array(userData), secretKey);
   }
 
   encryptSecretKey(secretKey, password) {
@@ -36,9 +36,14 @@ class BitnationId {
     });
   }
 
+  // take an object, stringify it and then decode it into a Uint8Array
+  objToUint8Array(obj) {
+    return tweetnaclUtil.decodeUTF8(JSON.stringify(obj));
+  }
+
   // verify the signed data with the public key
   verifySignature(userData, signature, publicKey) {
-    return tweetnacl.sign.detached.verify(tweetnaclUtil.decodeUTF8(userData), signature, publicKey);
+    return tweetnacl.sign.detached.verify(this.objToUint8Array(userData), signature, publicKey);
   }
 
   // check that if we decrypt the encryptedSecretKey, that it matches the generated secretKey
@@ -64,7 +69,7 @@ class BitnationId {
     return array1.length === array2.length && array1.every((element, index) =>
     element === array2[index]
   );
-  }
+}
 }
 
 export default new BitnationId();

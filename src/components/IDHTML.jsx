@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, Image, Table, Glyphicon, Alert } from 'react-bootstrap';
 import QRCode from 'react-qr';
+import { saveAs } from 'file-saver';
 import bitnationId from '../modules/BitnationId';
 
 class IDHTML extends Component {
@@ -84,11 +85,10 @@ class IDHTML extends Component {
 
   generateJSON() {
     console.log('generating a JSON...');
-    // var IDasPDF = new jsPDF();
-    //
-    // IDasPDF.addHTML(document.body, () => {
-    //   IDasPDF.save(this.props.data.name + ' - ID.pdf');
-    // });
+    console.log(this.state.certData);
+    console.log(JSON.stringify(this.state.certData, null, 2));
+    const blob = new Blob([JSON.stringify(this.state.certData)], { type: 'application/json' });
+    saveAs(blob, 'bitnation-id.json');
   }
 
   render() {
@@ -146,13 +146,13 @@ class IDHTML extends Component {
           <Col sm={6}>
             <h2>QR codes</h2>
             <h3><small>JSON encoded data entered by user</small></h3>
-            <QRCode text={this.state.certData} />
+            <QRCode text={JSON.stringify(this.state.certData)} />
             <h3><small>Verification data (encoded as Base64)</small></h3>
             <QRCode text={this.state.verificationData} />
           </Col>
           <Col sm={6} className="certData">
             <h3><small>JSON encoded data entered by user</small></h3>
-            {this.state.certData}
+            {JSON.stringify(this.state.certData)}
             <h3><small>Verification data (encoded as Base64)</small></h3>
             {this.state.verificationData}
             <hr />
