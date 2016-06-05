@@ -1,7 +1,7 @@
-var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var config = {
+const config = {
   entry: path.resolve(__dirname, 'src/main.jsx'),
   output: {
     path: path.resolve(__dirname, 'build'),

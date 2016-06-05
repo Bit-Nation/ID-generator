@@ -1,4 +1,4 @@
-# ID-generator
+# Bitnation ID
 ID generator for the Bitnation project.
 
 Demo at http://demo.golightlyplus.com/bitnation/id-generator/

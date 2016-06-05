@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb",
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "max-len": [2, 122],
+    "comma-dangle": [0],
+    "react/jsx-closing-bracket-location": [1, "tag-aligned"]
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  }
+}
