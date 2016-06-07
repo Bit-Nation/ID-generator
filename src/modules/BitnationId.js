@@ -1,6 +1,7 @@
 import secretkeyEncryption from 'secretkey-encryption'; // https://github.com/magician11/secretkey-encryption
 import tweetnacl from 'tweetnacl'; // https://github.com/dchest/tweetnacl-js
 import tweetnaclUtil from 'tweetnacl-util'; // https://github.com/dchest/tweetnacl-util-js
+import axios from 'axios';
 
 class BitnationId {
 
@@ -59,6 +60,22 @@ class BitnationId {
     });
   }
 
+  createHorizonTransaction(publicKey, signature) {
+    return new Promise((resolve, reject) => {
+      axios.post('https://bitnation.co/notary_access/api/server-req.php', {
+        message: `${this.toBase64(signature)}:${this.toBase64(publicKey)}`
+      })
+      .then((response) => {
+        //     nhzTx: data.transaction
+        console.log(response);
+        resolve(response);
+      })
+      .catch((response) => {
+        reject(response);
+      });
+    });
+  }
+
   // convert a Uint8Array to a Base64 string
   toBase64(uint8Array) {
     return tweetnaclUtil.encodeBase64(uint8Array);
@@ -69,7 +86,7 @@ class BitnationId {
     return array1.length === array2.length && array1.every((element, index) =>
     element === array2[index]
   );
-}
+  }
 }
 
 export default new BitnationId();

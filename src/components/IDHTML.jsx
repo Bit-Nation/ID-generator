@@ -51,12 +51,15 @@ class IDHTML extends Component {
 
       console.log(verificationMessage);
 
-      bitnationJsonId.hztx = 12341234;
+      return bitnationId.createHorizonTransaction(keyPair.publicKey, signature);
+    })
+    .then((horizonTx) => {
+      bitnationJsonId.hztx = horizonTx;
 
       const verificationData = JSON.stringify({
         publicKey: bitnationId.toBase64(keyPair.publicKey),
         signature: bitnationId.toBase64(signature),
-        nhzTx: 12341234
+        nhzTx: horizonTx
       });
 
       console.log('verificationData', verificationData);
@@ -70,29 +73,11 @@ class IDHTML extends Component {
       });
     })
     .catch((error) => {
+      this.setState({
+        error: error.toString()
+      });
       console.log(error);
     });
-
-
-    // send data to HZ
-    // $.post( "api/server-req.php", { message: encodeURIComponent(`${signature}:${publicKey}`) }, function( data ) {
-    //
-    //   let verificationData = JSON.stringify({
-    //     publicKey: publicKey,
-    //     signature: signature,
-    //     nhzTx: data.transaction
-    //   });
-    //
-    //   this.setState({
-    //     certData: certData,
-    //     verificationData: verificationData,
-    //     encryptedSecretKey: encryptedSecretKey,
-    //     verificationMessage: verificationMessage,
-    //     dataSentToHZ: true
-    //   });
-    // }.bind(this), 'json');
-
-
   }
 
   generateJSON() {
@@ -106,7 +91,15 @@ class IDHTML extends Component {
   render() {
     let content;
 
-    if (!this.state.bitnationIdGenerated) {
+    if (this.state.error) {
+      content = (
+        <Alert bsStyle="danger" className="text-center">
+          <h1><Glyphicon glyph="alert" /> Oops... we have a problem.</h1>
+          <h2>{this.state.error}</h2>
+          <p>To get support, email <a href="mailto:support@andrewgolightly.com">Andrew Golightly</a>.</p>
+        </Alert>
+      );
+    } else if (!this.state.bitnationIdGenerated) {
       content = <h3 className="text-center"><i className="fa fa-spin fa-3x fa-cog"></i><br />Generating ID...</h3>;
     } else {
       content = (<Grid className="IDHTML">
