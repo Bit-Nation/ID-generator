@@ -1,7 +1,7 @@
 import secretkeyEncryption from 'secretkey-encryption'; // https://github.com/magician11/secretkey-encryption
 import tweetnacl from 'tweetnacl'; // https://github.com/dchest/tweetnacl-js
 import tweetnaclUtil from 'tweetnacl-util'; // https://github.com/dchest/tweetnacl-util-js
-import axios from 'axios';
+import $ from 'jquery';
 
 class BitnationId {
 
@@ -62,17 +62,15 @@ class BitnationId {
 
   createHorizonTransaction(publicKey, signature) {
     return new Promise((resolve, reject) => {
-      axios.post('https://bitnation.co/notary_access/api/server-req.php', {
-        message: `${this.toBase64(signature)}:${this.toBase64(publicKey)}`
-      })
-      .then((response) => {
-        //     nhzTx: data.transaction
-        console.log(response);
-        resolve(response);
-      })
-      .catch((response) => {
-        reject(response);
-      });
+      // might be better to replace jQuery here with superagent or axios
+      $.post('https://bitnation.co/id/api/server-req-testnet.php', {
+        message: encodeURIComponent(`${this.toBase64(signature)}:${this.toBase64(publicKey)}`)
+      }, (response) => {
+        console.log('response', response);
+        console.log('transactionJSON', response.transactionJSON);
+        console.log('transaction', response.transactionJSON.transaction);
+        resolve(response.transactionJSON.transaction);
+      }, 'json');
     });
   }
 
@@ -86,7 +84,7 @@ class BitnationId {
     return array1.length === array2.length && array1.every((element, index) =>
     element === array2[index]
   );
-  }
+}
 }
 
 export default new BitnationId();

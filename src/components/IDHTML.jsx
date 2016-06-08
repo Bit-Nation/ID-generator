@@ -49,12 +49,13 @@ class IDHTML extends Component {
         verificationMessage = 'Error in verification';
       }
 
-      console.log(verificationMessage);
+      // console.log(verificationMessage);
 
       return bitnationId.createHorizonTransaction(keyPair.publicKey, signature);
     })
     .then((horizonTx) => {
       bitnationJsonId.hztx = horizonTx;
+      console.log(`pub key and signature written to Horizon. Returned transaction ID: ${horizonTx}`);
 
       const verificationData = JSON.stringify({
         publicKey: bitnationId.toBase64(keyPair.publicKey),
