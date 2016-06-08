@@ -20,7 +20,7 @@ class IDHTML extends Component {
     console.log('User submitted information', this.props.data);
     const certData = bitnationId.getCertData(this.props.data);
     bitnationJsonId.userData = certData;
-    bitnationJsonId.image = 'todo';
+    bitnationJsonId.image = this.props.data.image;
     console.log('created certData');
     const keyPair = bitnationId.generateKeypair();
     console.log('created keypair');
@@ -49,8 +49,6 @@ class IDHTML extends Component {
         verificationMessage = 'Error in verification';
       }
 
-      // console.log(verificationMessage);
-
       return bitnationId.createHorizonTransaction(keyPair.publicKey, signature);
     })
     .then((horizonTx) => {
@@ -62,8 +60,6 @@ class IDHTML extends Component {
         signature: bitnationId.toBase64(signature),
         nhzTx: horizonTx
       });
-
-      console.log('verificationData', verificationData);
 
       this.setState({
         certData,
@@ -77,14 +73,11 @@ class IDHTML extends Component {
       this.setState({
         error: error.toString()
       });
-      console.log(error);
     });
   }
 
   generateJSON() {
     console.log('generating a JSON...');
-    console.log(this.state.bitnationJsonId);
-    console.log(JSON.stringify(this.state.bitnationJsonId, null, 2));
     const blob = new Blob([JSON.stringify(this.state.bitnationJsonId)], { type: 'application/json' });
     saveAs(blob, 'bitnation-id.json');
   }

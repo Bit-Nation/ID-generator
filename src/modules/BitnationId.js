@@ -66,9 +66,6 @@ class BitnationId {
       $.post('https://bitnation.co/id/api/server-req-testnet.php', {
         message: encodeURIComponent(`${this.toBase64(signature)}:${this.toBase64(publicKey)}`)
       }, (response) => {
-        console.log('response', response);
-        console.log('transactionJSON', response.transactionJSON);
-        console.log('transaction', response.transactionJSON.transaction);
         resolve(response.transactionJSON.transaction);
       }, 'json');
     });
