@@ -63,7 +63,7 @@ class BitnationId {
   createHorizonTransaction(publicKey, signature) {
     return new Promise((resolve, reject) => {
       // might be better to replace jQuery here with superagent or axios
-      $.post('https://bitnation.co/id/api/server-req-testnet.php', {
+      $.post('https://bitnation.co/id/api/server-req.php', {
         message: encodeURIComponent(`${this.toBase64(signature)}:${this.toBase64(publicKey)}`)
       }, (response) => {
         resolve(response.transactionJSON.transaction);
