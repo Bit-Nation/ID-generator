@@ -1,5 +1,6 @@
 {
   "name": "BitnationID",
+  "version": "1.0.8",
   "scripts": {
     "build": "webpack -p",
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"

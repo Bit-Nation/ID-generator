@@ -53,3 +53,10 @@ Open a terminal and run...
 
 1. Goto http://codebeautify.org/base64-to-image-converter
 2. Copy and paste in the value for your image from your bitnation-id.json file.
+
+## Change Log
+
+### 14th June 2016
+Using [scrypt](https://en.wikipedia.org/wiki/Scrypt) to derive a key from the password entered, and then using that key to encrypt the secret key.
+
+The ID is now downloadable as a JSON file.
